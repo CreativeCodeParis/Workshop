@@ -8,6 +8,8 @@ char pass[] = "MeetupCCP";
 #define ID_BASE 200
 #define ID 1
 
+#define SENSOR_NB 1
+
 IPAddress staticIP(192, 168, 1, ID_BASE+ID);
 IPAddress gateway(192, 168, 1, 254);
 IPAddress subnet(255, 255, 255, 0);
@@ -18,8 +20,6 @@ WiFiUDP Udp;
 const IPAddress outIp(192,168,1,255);        // remote IP (not needed for receive)
 const unsigned int outPort = 9999;          // remote port (not needed for receive)
 const unsigned int localPort = 8888;        // local port to listen for UDP packets (here's where we send the packets)
-
-int sensorPin = 1;
 
 void setup()
 {
@@ -54,14 +54,25 @@ void setup()
 
 void loop()
 {
-  int sensorValue = 0;
-  sensorValue = analogRead(sensorPin);
-  OSCMessage msg("/sensor");
-  msg.add(sensorValue);
-  Udp.beginPacket(outIp, outPort);
-  msg.send(Udp);
-  Udp.endPacket();
-  msg.empty();
+  int i;
+  
+  int sensorPin;
+  int sensorValue;
+  char sensorName[30];
+
+  for(i=1; i<SENSOR_NB+1; i++)
+  {
+    sensorPin = i; // The ADC pin 1-18
+    sensorValue = analogRead(sensorPin);
+
+    sprintf(sensorName, "/Device/%d/Sensor/%d", ID, sensorPin);
+    OSCMessage msg(sensorName);
+    msg.add(sensorValue);
+    Udp.beginPacket(outIp, outPort);
+    msg.send(Udp);
+    Udp.endPacket();
+    msg.empty();
+  }
 
   delay(100);
 }
