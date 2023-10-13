@@ -56,7 +56,7 @@ void loop()
 {
   int sensorValue = 0;
   sensorValue = analogRead(sensorPin);
-  OSCMessage msg("/pressure");
+  OSCMessage msg("/sensor");
   msg.add(sensorValue);
   Udp.beginPacket(outIp, outPort);
   msg.send(Udp);
