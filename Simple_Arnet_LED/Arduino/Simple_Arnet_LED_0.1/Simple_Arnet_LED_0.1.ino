@@ -1,8 +1,8 @@
 #include <ArtnetWiFi.h>
 #include <FastLED.h>
 
-char ssid[] = "Livebox-8B20";
-char pass[] = "Raclette_1986";
+char ssid[] = "TP-Link_2C3B";
+char pass[] = "MeetupCCP";
 
 #define ID_BASE 200
 #define ID 0
