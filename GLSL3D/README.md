@@ -383,6 +383,9 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 
 ## Step 6 : Distinguer les objets
 
+<details>
+  <summary>Code</summary>
+
 ```glsl
 // Signed Distance Field
 float sphere_sdf(vec3 position, vec3 center, float radius)
@@ -479,11 +482,18 @@ void mainImage( out vec4 fragColor, in vec2 fragCoord )
 }
 ```
 
+</details>
+<br/>
+
+<a href = https://www.shadertoy.com/view/XX3Sz2>
+
+![](./img/6.png)
+
 ## Ressources
 
 [Code : Ray Marching Starting Point](https://www.shadertoy.com/view/WtGXDD)
 
-[Références SDFs et effets](https://iquilezles.org/articles/distfunctions/)
+[Référence SDFs et effets](https://iquilezles.org/articles/distfunctions/)
 
 [Série de vidéos : introduction au Ray Marching](https://youtu.be/PGtv-dBi2wE?list=PLGmrMu-IwbgtMxMiV3x4IrHPlPmg7FD-P)
 
