@@ -3,6 +3,7 @@
 - [Étape 3 : Normales](#étape-3--normales)
 - [Étape 4 : Lumières](#étape-4--lumières)
 - [Étape 5 : Jouer avec les SDFs](#étape-5--jouer-avec-les-sdfs)
+- [Step 6 : Distinguer les objets](#step-6--distinguer-les-objets)
 - [Ressources](#ressources)
 
 ## Étape 1 : Ray Origin & Ray Direction
@@ -380,7 +381,109 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 
 </a>
 
+## Step 6 : Distinguer les objets
+
+```glsl
+// Signed Distance Field
+float sphere_sdf(vec3 position, vec3 center, float radius)
+{
+    return distance(position, center) - radius;
+}
+
+
+float duplicated_sphere_sdf( vec3 position, vec3 s)
+{
+    vec3 q = position - s*round(position/s);
+    return sphere_sdf( q , vec3(0.), 1.);
+}
+
+
+float opTwist(in vec3 p, float k )
+{
+    float c = cos(k*p.y);
+    float s = sin(k*p.y);
+    mat2  m = mat2(c,-s,s,c);
+    vec3  q = vec3(m*p.xz,p.y);
+    return duplicated_sphere_sdf(q,vec3(10.))*0.5;
+}
+
+float sdBox( vec3 p, vec3 b )
+{
+  vec3 q = abs(p) - b;
+  return length(max(q,0.0)) + min(max(q.x,max(q.y,q.z)),0.0);
+}
+
+vec2 scene_sdf(vec3 position)
+{
+  float dist_sphere = sphere_sdf(position, vec3(0.), 1.);
+  float dist_cube = sdBox(position - vec3(1., 0., 0.), vec3(1.));
+  if (dist_cube < dist_sphere)
+  {
+      return vec2(dist_cube, 0);
+  }
+  else{
+      return vec2(dist_sphere, 1);
+  }
+}
+
+// derive = ( f(x+h) - f(x) ) / h
+vec3 compute_normal(vec3 position)
+{
+  float h = 0.001;
+  return normalize(vec3(
+    scene_sdf(position + vec3(h, 0., 0.)).x - scene_sdf(position).x,
+    scene_sdf(position + vec3(0., h, 0.)).x - scene_sdf(position).x,
+    scene_sdf(position + vec3(0., 0., h)).x - scene_sdf(position).x
+  ));
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    vec2 uv = (fragCoord-iResolution.xy/2.)/iResolution.y;
+
+    float focal_length = 0.5;
+    vec3 ray_origin = vec3(0., -3., 0.);
+    vec3 pixel_pos = ray_origin + vec3(uv.x, focal_length, uv.y);
+    vec3 ray_direction = normalize(pixel_pos - ray_origin);
+    
+    float distance_along_ray = 0.;
+    bool has_hit = false;
+    vec3 position;
+    int object_id;
+    for(int i = 0; i < 1000; i++)
+    {
+        position = ray_origin + ray_direction * distance_along_ray;
+        vec2 res = scene_sdf(position);
+        float distance_to_closest_object = res.x;
+        object_id = int(floor(res.y+0.1));
+        distance_along_ray += distance_to_closest_object;
+        
+        if (distance_to_closest_object < 0.001)
+        {
+            has_hit = true;
+            break;
+        }
+    }
+    
+    if(has_hit)
+    {
+        vec3 normal = compute_normal(position);
+        vec3 light_direction = normalize(vec3(cos(iTime), sin(iTime), -1.1));
+        float light_attenuation = max(-dot(light_direction, normal), 0.);
+        light_attenuation += 0.1;
+        vec3 color = object_id == 0 ? vec3(1., 0., 0.) : vec3(0., 1., 0.);
+        fragColor = vec4(color * vec3(light_attenuation), 1.0);
+    }
+    else
+        fragColor = vec4(vec3(0.), 1.0);
+}
+```
+
 ## Ressources
+
+[Code : Ray Marching Starting Point](https://www.shadertoy.com/view/WtGXDD)
+
+[Références SDFs et effets](https://iquilezles.org/articles/distfunctions/)
 
 [Série de vidéos : introduction au Ray Marching](https://youtu.be/PGtv-dBi2wE?list=PLGmrMu-IwbgtMxMiV3x4IrHPlPmg7FD-P)
 
