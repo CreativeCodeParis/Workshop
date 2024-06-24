@@ -30,7 +30,11 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 </details>
 <br/>
 
-<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/4XtSz4?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+<a href = https://www.shadertoy.com/view/4XtSz4>
+
+![](./img/1.png)
+
+</a>
 
 ## Étape 2 : Champ de Distance (SDF) & Ray Marching
 
@@ -76,7 +80,12 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 </details>
 <br/>
 
-<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/X3dSz4?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+<a href = https://www.shadertoy.com/view/X3dSz4>
+
+![](./img/2.png)
+
+</a>
+
 
 ## Étape 3 : Normales
 
@@ -149,7 +158,12 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 </details>
 <br/>
 
-<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/43tXz4?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+<a href = https://www.shadertoy.com/view/43tXz4>
+
+![](./img/3.png)
+
+</a>
+
 
 ## Étape 4 : Lumières
 
@@ -225,7 +239,12 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 </details>
 <br/>
 
-<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/X3dXz4?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+<a href = https://www.shadertoy.com/view/X3dXz4>
+
+![](./img/4.png)
+
+</a>
+
 
 ## Étape 5 : Jouer avec les SDFs
 
@@ -355,7 +374,11 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
 </details>
 <br/>
 
-<iframe width="640" height="360" frameborder="0" src="https://www.shadertoy.com/embed/MXtSRN?gui=true&t=10&paused=true&muted=false" allowfullscreen></iframe>
+<a href = https://www.shadertoy.com/view/MXtSRN>
+
+![](./img/5.png)
+
+</a>
 
 ## Ressources
 
